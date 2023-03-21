@@ -20,5 +20,5 @@ public class UserAuthorities extends BaseEntity{
     User user;
 
     @ManyToOne
-    Authorities authorities;
+    Authority authorities;
 }

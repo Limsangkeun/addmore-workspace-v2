@@ -10,9 +10,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     database: mysql
     generate-ddl: true
     show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always

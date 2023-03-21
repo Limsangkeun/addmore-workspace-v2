@@ -1,13 +1,38 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>ADDMORE</title>
+    <link th:href="@{/data/img/addmore.png}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css"
+          th:href="@{/bootstrap5/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="custom/signin.css"
+          th:href="@{/custom/signin.css}" />
 </head>
-<body>
+<body class="text-center">
+<main class="form-signin">
+    <form th:action="@{/member/loginProcess}" method="post">
+        <img class="mb-4" th:src="@{/data/img/addmore.png}" alt="" width="100" height="80">
+        <h1 class="h3 mb-3 fw-bold">ADDMORE WORKPLACE</h1>
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="ID">
+            <label for="floatingInput">Id</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating mb-1">
+            <select class="form-select" id="versionSelector" name="version">
+                <option selected value="old">Page</option>
+                <option value="new">Dashboard</option>
+            </select>
+            <label for="versionSelector">UI</label>
+        </div>
 
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <p th:if="${loginError}" class="error">Wrong user or password</p>
+        <p class="mt-5 mb-3 text-muted" th:text="|&copy ${curYear} ADDMORE Co. All right reserved.|">&copy; 2021 ADDMORE Co. All right reserved.</p>
+    </form>
+</main>
 </body>
 </html>
