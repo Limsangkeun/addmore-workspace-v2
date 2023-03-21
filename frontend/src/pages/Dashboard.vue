@@ -85,13 +85,6 @@
             <p class="category">Revenue</p>
             <h3 class="title">$34,245</h3>
           </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>date_range</md-icon>
-              Last 24 Hours
-            </div>
-          </template>
         </stats-card>
       </div>
       <div

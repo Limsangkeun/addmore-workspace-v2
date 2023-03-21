@@ -76,6 +76,7 @@
     </md-card>
   </form>
 </template>
+
 <script>
 export default {
   name: "edit-profile-form",

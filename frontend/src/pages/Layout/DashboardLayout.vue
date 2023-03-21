@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
-
     <side-bar
       :sidebar-item-color="sidebarBackground"
       :sidebar-background-image="sidebarBackgroundImage"
@@ -35,10 +34,6 @@
         <md-icon>notifications</md-icon>
         <p>Notifications</p>
       </sidebar-link>
-      <sidebar-link to="/upgrade" class="active-pro">
-        <md-icon>unarchive</md-icon>
-        <p>Upgrade to PRO</p>
-      </sidebar-link>
     </side-bar>
 
     <div class="main-panel">
@@ -51,15 +46,12 @@
       </fixed-plugin>
 
       <dashboard-content> </dashboard-content>
-
-      <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
   </div>
 </template>
 
 <script>
 import TopNavbar from "./TopNavbar.vue";
-import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 import FixedPlugin from "./Extra/FixedPlugin.vue";
@@ -68,7 +60,6 @@ export default {
   components: {
     TopNavbar,
     DashboardContent,
-    ContentFooter,
     MobileMenu,
     FixedPlugin,
   },
