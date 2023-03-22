@@ -27,12 +27,15 @@ public class SecurityConfig {
         http
                 .csrf()
                 .disable()
-                .authorizeHttpRequests((authroize) -> {
-                    authroize
+                .authorizeHttpRequests((authorize) -> {
+                    authorize
                             .anyRequest().permitAll();
                 })
+                .formLogin()
+                .loginProcessingUrl("/api/loginProcess.do")
+                .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //JWT Token 사용 시, 시큐리티에서 세션을 별도 생성하지 않고, 기존 것을 사용하지도 않음.
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFIlter, UsernamePasswordAuthenticationFilter.class);

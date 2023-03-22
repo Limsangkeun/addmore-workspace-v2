@@ -1,4 +1,4 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserAuthorities extends BaseEntity{
+class UserAuthorities extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

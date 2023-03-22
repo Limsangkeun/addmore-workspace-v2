@@ -1,4 +1,4 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
-@Entity(name = "DEPT")
+@Entity(name = "dept")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter

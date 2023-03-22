@@ -1,11 +1,11 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 
-@Entity(name = "Authorities")
+@Entity(name = "authority")
 @Getter
 @Setter
 @AllArgsConstructor

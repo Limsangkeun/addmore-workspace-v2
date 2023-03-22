@@ -1,4 +1,4 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 public enum ERole {
     ROLE_ADMIN,

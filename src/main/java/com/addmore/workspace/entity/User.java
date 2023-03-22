@@ -1,18 +1,16 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 
-@Entity(name = "USERS")
+@Entity(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor

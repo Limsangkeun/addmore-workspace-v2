@@ -1,6 +1,6 @@
 package com.addmore.workspace.repository;
 
-import com.addmore.workspace.common.entity.User;
+import com.addmore.workspace.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

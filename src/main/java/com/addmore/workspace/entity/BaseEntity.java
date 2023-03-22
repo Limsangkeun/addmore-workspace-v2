@@ -1,4 +1,4 @@
-package com.addmore.workspace.common.entity;
+package com.addmore.workspace.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
