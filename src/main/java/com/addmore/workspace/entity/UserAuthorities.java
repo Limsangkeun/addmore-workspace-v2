@@ -12,13 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class UserAuthorities extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-
     @ManyToOne
     User user;
 
     @ManyToOne
-    Authority authorities;
+    Authority authority;
 }

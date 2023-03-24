@@ -11,6 +11,8 @@ const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
 const outsideClickListener = ref(null);
 
+let isLogin = ref(false);
+
 watch(isSidebarActive, (newVal) => {
     if (newVal) {
         bindOutsideClickListener();
@@ -57,7 +59,9 @@ const isOutsideClicked = (event) => {
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
 
-const isLogin = ref(false);
+const changeLoginFlag = () => {
+  isLogin.value = true;
+}
 </script>
 
 <template>
@@ -75,7 +79,7 @@ const isLogin = ref(false);
         <app-config></app-config>
         <div class="layout-mask"></div>
     </div>
-    <LoginPage v-else></LoginPage>
+    <LoginPage v-else @authenticated=""></LoginPage>
 </template>
 
 <style lang="scss" scoped></style>

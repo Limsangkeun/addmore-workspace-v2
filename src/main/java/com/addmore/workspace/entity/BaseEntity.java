@@ -1,9 +1,6 @@
 package com.addmore.workspace.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +17,9 @@ import java.time.LocalDateTime;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     @CreatedBy
     String createdBy;

@@ -14,8 +14,5 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 public class Dept extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
     String name;
 }

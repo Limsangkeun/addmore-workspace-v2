@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,6 +29,10 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        return null;
+        User loginUser = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("해당 계정의 사용자가 없습니다. : " + request.getUsername()));
+
+        String token = jwtService.generateToken(loginUser);
+        return new AuthenticationResponse(token);
     }
 }
