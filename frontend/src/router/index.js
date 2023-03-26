@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import axios from 'axios';
+import store from '@/store';
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -14,9 +16,14 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
+                    path: '/admin/member',
+                    name: 'member',
+                    component: () => import('@/views/admin/MemberMain.vue')
+                },
+                {
                     path: '/uikit/formlayout',
-                    name: 'formlayout',
-                    component: () => import('@/views/uikit/FormLayout.vue')
+                    name: 'formLayout',
+                    component: () => import('@/views/uikit/Formlayout.vue')
                 },
                 {
                     path: '/uikit/input',
@@ -157,7 +164,7 @@ const router = createRouter({
         {
             path: '/auth/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/LoginPage.vue')
+            component: () => import('@/views/auth/LoginPage.vue')
         },
         {
             path: '/auth/access',
@@ -170,6 +177,26 @@ const router = createRouter({
             component: () => import('@/views/pages/auth/Error.vue')
         }
     ]
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.path != '/auth/login') {
+        axios
+            .post('/api/auth/is-valid-token', store.state.userSession)
+            .then((resp) => {
+                if (resp.data.isValid) {
+                    next();
+                    return;
+                }
+                next('/auth/login');
+            })
+            .catch((err) => {
+                console.log(err);
+                next('/auth/login');
+            });
+    } else {
+        next();
+    }
 });
 
 export default router;

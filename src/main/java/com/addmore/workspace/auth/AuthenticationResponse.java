@@ -9,5 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
+    String username;
+    String name;
     String token;
 }

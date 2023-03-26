@@ -10,9 +10,7 @@ const model = ref([
     },
     {
         label: 'Admin',
-        items: [
-            { label: '직원관리', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-        ]
+        items: [{ label: '직원관리', icon: 'pi pi-fw pi-id-card', to: '/admin/member' }]
     },
     {
         label: 'UI Components',

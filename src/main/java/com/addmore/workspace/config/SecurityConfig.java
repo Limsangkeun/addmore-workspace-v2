@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests((authorize) -> {
                     authorize
-                            .anyRequest().permitAll();
+                            .requestMatchers("/api/auth/**").permitAll()
+                            .anyRequest().authenticated();
                 })
                 .formLogin().disable()
                 .sessionManagement()

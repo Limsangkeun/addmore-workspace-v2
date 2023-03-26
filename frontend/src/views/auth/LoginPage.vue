@@ -3,23 +3,32 @@ import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import axios from 'axios';
+import store from '@/store';
+import _ from 'lodash';
 
 const { layoutConfig, contextPath } = useLayout();
 const username = ref('');
 const password = ref('');
 
-const loginSuccess = () => {
-  this.$emit('authenticated');
+const loginSuccess = function() {
+  username.value = '';
+  password.value = '';
+  location.href = '/';
 }
 
-const loginBtnClick = async () => {
+const loginBtnClick = () => {
   const loginObj = {
     username : username.value,
     password : password.value
   };
-  await axios.post('/api/auth/loginProcess', loginObj, {}).then(response => {
-    console.log(response.data.token);
-    loginSuccess();
+  axios.post('/api/auth/authenticate', loginObj, {}).then(response => {
+    if(!_.isEmpty(response.data.token)) {
+      localStorage.setItem("atk", response.data.token);
+      response.data.isValid = true;
+      store.commit('authenticated', response.data);
+      loginSuccess();
+    }
+
   });
 }
 </script>

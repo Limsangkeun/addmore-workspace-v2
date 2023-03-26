@@ -5,13 +5,11 @@ import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
-import LoginPage from '@/user/auth/LoginPage.vue';
+import LoginPage from '@/views/auth/LoginPage.vue';
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
 const outsideClickListener = ref(null);
-
-let isLogin = ref(false);
 
 watch(isSidebarActive, (newVal) => {
     if (newVal) {
@@ -58,14 +56,10 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
-
-const changeLoginFlag = () => {
-  isLogin.value = true;
-}
 </script>
 
 <template>
-    <div class="layout-wrapper" :class="containerClass" v-if="isLogin">
+    <div class="layout-wrapper" :class="containerClass">
         <app-topbar></app-topbar>
         <div class="layout-sidebar">
             <app-sidebar></app-sidebar>
@@ -79,7 +73,6 @@ const changeLoginFlag = () => {
         <app-config></app-config>
         <div class="layout-mask"></div>
     </div>
-    <LoginPage v-else @authenticated=""></LoginPage>
 </template>
 
 <style lang="scss" scoped></style>

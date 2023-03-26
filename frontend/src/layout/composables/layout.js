@@ -40,6 +40,8 @@ export function useLayout() {
             layoutState.overlayMenuActive = !layoutState.overlayMenuActive;
         }
 
+
+
         if (window.innerWidth > 991) {
             layoutState.staticMenuDesktopInactive = !layoutState.staticMenuDesktopInactive;
         } else {
