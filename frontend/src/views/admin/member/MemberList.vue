@@ -1,5 +1,9 @@
 <script setup>
+const emits = defineEmits(['goDetail']);
 
+const goDetail = (model) => {
+  emits('goDetail',  'detail', model);
+}
 </script>
 
 <template>
@@ -24,7 +28,7 @@
                   <InputText placeholder="Search..." />
                 </span>
                 <Button label="Search" icon="pi pi-search" class="mr-2"/>
-                <Button label="New" icon="pi pi-plus" class="p-button-success mr-2"/>
+                <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="goDetail"/>
                 <Button label="Delete" icon="pi pi-trash" class="p-button-danger"/>
               </div>
             </div>

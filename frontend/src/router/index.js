@@ -18,7 +18,7 @@ const router = createRouter({
                 {
                     path: '/admin/member',
                     name: 'member',
-                    component: () => import('@/views/admin/MemberMain.vue')
+                    component: () => import('@/views/admin/member/MemberMain.vue')
                 },
                 {
                     path: '/uikit/formlayout',
