@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface DeptReposiotory extends JpaRepository<Dept, String> {
     Optional<Dept> findByName(String name);
-    Page<Dept> findAllByName(String name, Pageable pageable);
+    Page<Dept> findAllByNameStartsWithIgnoreCaseOrderByCreatedAtDesc(String name, Pageable pageable);
+    Page<Dept> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

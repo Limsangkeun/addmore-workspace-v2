@@ -6,7 +6,11 @@ import store from "@/store";
 const display = ref(false);
 const deptNm = ref('');
 const searchNm = ref('');
-
+const searchModel = ref({
+  name: '',
+  page: 0,
+  size: 50
+});
 const open = () => {
   deptNm.value = '';
   display.value = true;
@@ -23,9 +27,10 @@ const checkDuplication = (e) => {
 
 const createDept = () => {
   console.log(deptNm.value);
-  axios.post('/api/dept/create', {name:deptNm.value}, {
+  axios.post('/api/dept/create', {'name':deptNm.value}, {
     headers: {
-      Authorization: "Bearer " + store.state.userSession.token
+      "Authorization" : "Bearer " + store.state.userSession.token,
+      "Content-Type" : "application/json"
     }
   }).then(response => {
     console.log(response.data);
@@ -38,9 +43,10 @@ const createDept = () => {
 
 const search = (e) => {
   if(e.keyCode != '13') return;
-  axios.post('/api/dept/list', {name:searchNm.value, page:1, count:50}, {
+  axios.post('/api/dept/list', searchModel.value, {
     headers: {
-      Authorization: "Bearer " + store.state.userSession.token
+      "Authorization" : "Bearer " + store.state.userSession.token,
+      "Content-Type" : "application/json"
     }
   }).then(response => {
     console.log(response.data);

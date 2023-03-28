@@ -1,8 +1,6 @@
 package com.addmore.workspace.entity.request;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -10,8 +8,10 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeptRequest {
     String name;
-    int page;
-    int size;
+    int page = 0;
+    int size = 50;
 }

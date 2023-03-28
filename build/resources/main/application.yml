@@ -26,6 +26,4 @@ spring:
       mode: always
 logging:
   level:
-    org.hibernate.SQL: trace
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    org.hibernate.query: trace
+    org.hibernate.orm.jdbc.bind: trace

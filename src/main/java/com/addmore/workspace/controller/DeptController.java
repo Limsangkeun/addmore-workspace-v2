@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,19 +26,17 @@ public class DeptController {
     private final DeptService deptService;
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createDept(@NonNull DeptRequest deptRequest) {
-        log.info("======== create dept ========");
-        log.info(deptRequest.toString());
-        return new ResponseEntity<>(deptService.createDept(deptRequest.getName()), HttpStatus.OK);
+    public void createDept(@NonNull @RequestBody DeptRequest deptRequest) {
+        deptService.createDept(deptRequest.getName());
     }
 
     @PostMapping("/check-duplication")
-    public ResponseEntity<Map<String, Object>> checkDuplication(@NonNull DeptRequest deptRequest) {
+    public ResponseEntity<Map<String, Object>> checkDuplication(@NonNull @RequestBody DeptRequest deptRequest) {
         return new ResponseEntity<>(deptService.checkDuplication(deptRequest.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/list")
-    public ResponseEntity<Map<String, Object>> findDeptList(DeptRequest deptRequest) {
+    public ResponseEntity<Map<String, Object>> findDeptList(@NonNull @RequestBody DeptRequest deptRequest) {
         log.info("======== find dept list ========");
         log.info(deptRequest.toString());
         Pageable pageable = PageRequest.of(deptRequest.getPage(), deptRequest.getSize());
