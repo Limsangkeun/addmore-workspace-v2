@@ -1,4 +1,4 @@
-package com.addmore.workspace.entity.request;
+package com.addmore.workspace.entity.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DeptRequest {
+public class DeptDto {
+    String id;
     String name;
-    int page;
-    int size;
+    LocalDateTime createdAt;
+    String createdBy;
 }

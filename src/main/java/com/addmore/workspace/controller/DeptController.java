@@ -4,6 +4,8 @@ import com.addmore.workspace.entity.request.DeptRequest;
 import com.addmore.workspace.service.DeptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -32,5 +34,13 @@ public class DeptController {
     @PostMapping("/check-duplication")
     public ResponseEntity<Map<String, Object>> checkDuplication(@NonNull DeptRequest deptRequest) {
         return new ResponseEntity<>(deptService.checkDuplication(deptRequest.getName()), HttpStatus.OK);
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<Map<String, Object>> findDeptList(DeptRequest deptRequest) {
+        log.info("======== find dept list ========");
+        log.info(deptRequest.toString());
+        Pageable pageable = PageRequest.of(deptRequest.getPage(), deptRequest.getSize());
+        return new ResponseEntity<>(deptService.findDeptList(deptRequest.getName(), pageable), HttpStatus.OK);
     }
 }

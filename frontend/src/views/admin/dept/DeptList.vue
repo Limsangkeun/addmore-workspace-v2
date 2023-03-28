@@ -1,10 +1,12 @@
 <script setup>
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 import store from "@/store";
 const display = ref(false);
 const deptNm = ref('');
+const searchNm = ref('');
+
 const open = () => {
   deptNm.value = '';
   display.value = true;
@@ -34,6 +36,17 @@ const createDept = () => {
   }).catch(err => console.log(err));
 }
 
+const search = (e) => {
+  if(e.keyCode != '13') return;
+  axios.post('/api/dept/list', {name:searchNm.value, page:1, count:50}, {
+    headers: {
+      Authorization: "Bearer " + store.state.userSession.token
+    }
+  }).then(response => {
+    console.log(response.data);
+  }).catch(err => console.log(err));
+};
+
 </script>
 
 <template>
@@ -56,7 +69,7 @@ const createDept = () => {
                 <div class="my-2 flex flex-row">
                 <span class="block mt-2 mr-2 md:mt-0 p-input-icon-left">
                   <i class="pi pi-search" />
-                  <InputText placeholder="Search..." />
+                  <InputText placeholder="Search..." v-model="searchNm" @keydown="search"/>
                 </span>
                   <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="open"/>
                   <Button label="Delete" icon="pi pi-trash" class="p-button-danger"/>
