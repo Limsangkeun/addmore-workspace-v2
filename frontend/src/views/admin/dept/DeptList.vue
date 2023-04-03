@@ -1,24 +1,52 @@
 <script setup>
 
-import {onMounted, ref} from "vue";
 import axios from "axios";
-import store from "@/store";
-const display = ref(false);
-const deptNm = ref('');
-const searchNm = ref('');
-const searchModel = ref({
-  name: '',
-  page: 0,
-  size: 50
+import globalStore from "@/store";
+import {reactive} from "vue";
+import _ from "lodash";
+
+const data = reactive({
+  showDialog: false,
+  deptName: '',
+  searchName: '',
+  deptList: [],
+  searchModel: {
+    name: '',
+    page: 0,
+    size: 50
+  },
+  pageModel: {
+    totalCount: 0,
+    totalPage: 0,
+    currentPage: 0
+  },
+  selectedDeptList: []
 });
+
+const reset = () => {
+  data.showDialog = false;
+  data.deptName = '';
+  data.searchName = '';
+  data.deptList = [];
+  data.searchModel = {
+    name: '',
+    page: 0,
+    size: 50
+  };
+  data.pageModel = {
+    totalCount: 0,
+    totalPage: 0,
+    currentPage: 0
+  };
+}
+
 const open = () => {
-  deptNm.value = '';
-  display.value = true;
+  data.showDialog = true;
 };
 
 const close = () => {
-  deptNm.value = '';
-  display.value = false;
+  data.deptName = '';
+  data.showDialog = false;
 };
 
 const checkDuplication = (e) => {
@@ -26,32 +54,35 @@ const checkDuplication = (e) => {
 }
 
 const createDept = () => {
-  console.log(deptNm.value);
-  axios.post('/api/dept/create', {'name':deptNm.value}, {
+  console.log(data.deptName);
+  axios.post('/api/dept/create', {'name': data.deptName}, {
     headers: {
-      "Authorization" : "Bearer " + store.state.userSession.token,
-      "Content-Type" : "application/json"
+      "Authorization": "Bearer " + globalStore.state.userSession.token,
+      "Content-Type": "application/json"
     }
   }).then(response => {
     console.log(response.data);
-    if(response.data.flag) {
-      alert("성공!");
+    if (response.data.flag) {
       close();
+      search();
     }
   }).catch(err => console.log(err));
 }
 
 const search = (e) => {
-  if(e.keyCode != '13') return;
-  axios.post('/api/dept/list', searchModel.value, {
+  if (!_.isEmpty(e) && e.keyCode != '13') return;
+  axios.post('/api/dept/list', data.searchModel, {
     headers: {
-      "Authorization" : "Bearer " + store.state.userSession.token,
-      "Content-Type" : "application/json"
+      "Authorization": "Bearer " + globalStore.state.userSession.token,
+      "Content-Type": "application/json"
     }
   }).then(response => {
     console.log(response.data);
+    data.deptList = response.data.dept_list;
+    data.pageModel.totalCount = response.data.total_count;
   }).catch(err => console.log(err));
 };
+``
 
 </script>
 
@@ -59,45 +90,50 @@ const search = (e) => {
   <div class="grid">
     <div class="col-12">
       <div class="card">
-        <div class="p-card-content">
-          <DataTable
-              dataKey="id"
-              :paginator="true"
-              :rows="20"
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              :rowsPerPageOptions="[5, 10, 25]"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-              responsiveLayout="scroll"
-          >
-            <template #header>
-              <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                <h5 class="m-0 font-bold">부서현황</h5>
-                <div class="my-2 flex flex-row">
-                <span class="block mt-2 mr-2 md:mt-0 p-input-icon-left">
-                  <i class="pi pi-search" />
-                  <InputText placeholder="Search..." v-model="searchNm" @keydown="search"/>
-                </span>
-                  <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="open"/>
-                  <Button label="Delete" icon="pi pi-trash" class="p-button-danger"/>
-                </div>
-              </div>
-            </template>
-            <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-          </DataTable>
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center mb-3">
+          <h5 class="m-0 font-bold">부서현황</h5>
+          <div class="my-2 flex flex-row">
+            <span class="block mt-2 mr-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"/>
+              <InputText v-model="data.searchName" placeholder="Search..." @keydown="search"/>
+            </span>
+            <Button class="p-button-success mr-2" icon="pi pi-plus" label="New" @click="open"/>
+            <Button class="p-button-danger" icon="pi pi-trash" label="Delete"/>
+          </div>
         </div>
+        <DataTable
+            ref="deptGrid"
+            :paginator="true"
+            v-model:rows="data.searchModel.size"
+            :rowsPerPageOptions="[5, 10, 25, 50]"
+            v-model:totalRecords="data.pageModel.totalCount"
+            v-model:value="data.deptList"
+            class="p-datatable-sm"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            dataKey="id"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            scrollHeight="500px"
+            scrollable
+        >
+          <Column selectionMode="multiple" style="flex:0 0 1rem"></Column>
+          <Column field="name" header="부서명" ></Column>
+          <Column field="createdBy" header="생성자"></Column>
+          <Column data-type="date" field="createdAt" header="생성일자"></Column>
+        </DataTable>
       </div>
     </div>
   </div>
-  <Dialog header="부서생성" v-model:visible="display" :breakpoints="{ '960px': '75vw' }" :style="{ width: '30vw' }" :modal="true">
+  <Dialog v-model:visible="data.showDialog" :breakpoints="{ '960px': '75vw' }" :modal="true" :style="{ width: '30vw' }"
+          header="부서생성">
     <div class="p-fluid">
       <div class="field">
         <label for="name1">Name</label>
-        <InputText id="name1" type="text" @change="checkDuplication" v-model="deptNm"/>
+        <InputText id="name1" v-model="data.deptName" type="text" @change="checkDuplication"/>
       </div>
     </div>
     <template #footer>
-      <Button label="Ok" @click="createDept" icon="pi pi-check" class="p-button-outlined"/>
-      <Button label="Cancel" @click="close" icon="pi pi-check" class="p-button-outlined" />
+      <Button class="p-button-outlined" icon="pi pi-check" label="Ok" @click="createDept"/>
+      <Button class="p-button-outlined" icon="pi pi-check" label="Cancel" @click="close"/>
     </template>
   </Dialog>
 </template>

@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 
-const store = createStore({
+const globalStore = createStore({
     state() {
         return {
             userSession: {
@@ -18,4 +18,4 @@ const store = createStore({
     }
 });
 
-export default store;
+export default globalStore;
