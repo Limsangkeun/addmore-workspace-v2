@@ -16,6 +16,18 @@ const model = ref([
         ]
     },
     {
+        label: 'workspace',
+        items: [
+            { label: '업체현황', icon: 'pi pi-fw pi-building', to: '/company' },
+        ]
+    },
+    {
+      label: '계약',
+      items: [
+          { label: '계약현황', icon: 'pi pi-fw pi-building', to: '/company' },
+      ]
+    },
+    {
         label: 'UI Components',
         items: [
             { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },

@@ -65,9 +65,10 @@ const isOutsideClicked = (event) => {
             <app-sidebar></app-sidebar>
         </div>
         <div class="layout-main-container">
-            <div class="layout-main">
+<!--            <div class="layout-main">
                 <router-view></router-view>
-            </div>
+            </div>-->
+            <router-view></router-view>
             <app-footer></app-footer>
         </div>
         <app-config></app-config>
