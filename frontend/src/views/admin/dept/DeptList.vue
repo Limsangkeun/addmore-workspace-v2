@@ -62,10 +62,8 @@ const createDept = () => {
     }
   }).then(response => {
     console.log(response.data);
-    if (response.data.flag) {
-      close();
-      search();
-    }
+    close();
+    search();
   }).catch(err => console.log(err));
 }
 
@@ -118,7 +116,7 @@ const search = (e) => {
           <Column selectionMode="multiple" style="flex:0 0 1rem"></Column>
           <Column field="name" header="부서명" ></Column>
           <Column field="createdBy" header="생성자"></Column>
-          <Column data-type="date" field="createdAt" header="생성일자"></Column>
+          <Column field="createdAt" header="생성일자"></Column>
         </DataTable>
       </div>
     </div>
