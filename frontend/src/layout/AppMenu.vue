@@ -24,7 +24,7 @@ const model = ref([
     {
       label: '계약',
       items: [
-          { label: '계약현황', icon: 'pi pi-fw pi-building', to: '/company' },
+          { label: '계약현황', icon: 'pi pi-fw pi-building', to: '/contract' },
       ]
     },
     {

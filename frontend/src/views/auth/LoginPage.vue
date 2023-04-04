@@ -1,27 +1,30 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-import { ref, computed } from 'vue';
+import {ref, computed, reactive} from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import axios from 'axios';
 import store from '@/store';
 import _ from 'lodash';
 
 const { layoutConfig, contextPath } = useLayout();
-const username = ref('');
-const password = ref('');
+
+const data = reactive({
+  loginModel : {
+    username : '',
+    password: ''
+  }
+});
 
 const loginSuccess = function() {
-  username.value = '';
-  password.value = '';
+  data.loginModel = {
+    username : '',
+    password : ''
+  };
   location.href = '/';
 }
 
 const loginBtnClick = () => {
-  const loginObj = {
-    username : username.value,
-    password : password.value
-  };
-  axios.post('/api/auth/authenticate', loginObj, {}).then(response => {
+  axios.post('/api/auth/authenticate', data.loginModel, {}).then(response => {
     if(!_.isEmpty(response.data.token)) {
       localStorage.setItem("atk", response.data.token);
       response.data.isValid = true;
@@ -45,10 +48,10 @@ const loginBtnClick = () => {
 
                     <div>
                         <label for="username" class="block text-900 text-xl font-medium mb-2">ID</label>
-                        <InputText id="username" type="text" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="username" />
+                        <InputText id="username" type="text" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="data.loginModel.username" maxlength="30"/>
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <Password id="password1" v-model="password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
+                        <Password id="password1" v-model="data.loginModel.password" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
 
 <!--                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">

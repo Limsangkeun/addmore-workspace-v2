@@ -10,11 +10,11 @@ import org.springframework.security.core.GrantedAuthority;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Authority extends BaseEntity implements GrantedAuthority {
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, unique = true, length = 30)
     String name;
-
     @Override
     public String getAuthority() {
         return this.name;
