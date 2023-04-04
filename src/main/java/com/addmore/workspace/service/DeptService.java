@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class DeptService {
         List<DeptDto> deptRequestList = deptData.getContent().stream().map(dept -> DeptDto.builder()
                 .id(dept.getId())
                 .name(dept.getName())
-                .createdAt(dept.getCreatedAt())
+                .createdAt(dept.getCreatedAt().toLocalDate())
                 .createdBy(dept.getCreatedBy())
                 .build()).toList();
 

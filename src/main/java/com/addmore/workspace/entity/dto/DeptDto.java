@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,6 +14,6 @@ import java.time.LocalDateTime;
 public class DeptDto {
     String id;
     String name;
-    LocalDateTime createdAt;
+    LocalDate createdAt;
     String createdBy;
 }
