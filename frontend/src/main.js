@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import Util from "@/util";
 
 import PrimeVue from 'primevue/config';
 import AutoComplete from 'primevue/autocomplete';
@@ -114,6 +115,7 @@ app.use(ToastService);
 app.use(DialogService);
 app.use(ConfirmationService);
 app.use(store);
+app.use(Util);
 
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);

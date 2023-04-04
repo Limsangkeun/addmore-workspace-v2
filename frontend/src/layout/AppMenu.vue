@@ -12,7 +12,8 @@ const model = ref([
         label: 'Admin',
         items: [
             { label: '직원관리', icon: 'pi pi-fw pi-id-card', to: '/admin/member' },
-            { label: '부서관리', icon: 'pi pi-fw pi-users', to: '/admin/dept' }
+            { label: '부서관리', icon: 'pi pi-fw pi-users', to: '/admin/dept' },
+            { label: '권한관리', icon: 'pi pi-fw pi-lock', to: '/admin/authority' }
         ]
     },
     {
