@@ -7,13 +7,17 @@ const globalStore = createStore({
                 token: localStorage.getItem('atk'),
                 username: '',
                 isValid: false
-            }
+            },
+            showLoading: false
         };
     },
     getters: {},
     mutations: {
         authenticated(state, sessionInfo) {
             state.userSession = sessionInfo;
+        },
+        setLoading(state, flag) {
+            state.showLoading = flag;
         }
     }
 });

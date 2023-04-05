@@ -24,7 +24,7 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(AuthenticationRequest request) {
         User user = User.builder()
                 .id(UUID.randomUUID().toString())
                 .username(request.getUsername())

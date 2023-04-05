@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class AuthRequest {
+public class AuthorityRequest {
     String id;
     String name;
 }

@@ -1,11 +1,12 @@
 <script setup>
 import { computed, watch, ref } from 'vue';
+import globalStore from "@/store";
 import AppTopbar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
-import LoginPage from '@/views/auth/LoginPage.vue';
+import {DotLoader} from 'vue3-spinner';
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
@@ -73,7 +74,9 @@ const isOutsideClicked = (event) => {
         </div>
         <app-config></app-config>
         <div class="layout-mask"></div>
+        <DotLoader :loading="true"></DotLoader>
     </div>
+
 </template>
 
 <style lang="scss" scoped></style>

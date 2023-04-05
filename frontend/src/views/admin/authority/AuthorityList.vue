@@ -2,6 +2,7 @@
 
 import {inject, reactive} from "vue";
 import _ from "lodash";
+import globalStore from "@/store";
 
 const data = reactive({
   authorities : [],
@@ -10,14 +11,21 @@ const data = reactive({
   showDialog : false
 });
 
+const UT = inject('$UT');
+
 const search = (e) => {
   if(!_.isEmpty(e) && e.keyCode !== 13) return;
-  inject('UT').post('/api/authority/find', {name: data.searchName.trim()})
+  globalStore.commit('setLoading', true);
+  UT.post('/api/authority/find', {name: data.searchName.trim()}, null)
       .then(response => {
         data.searchName = '';
         console.log(response);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(()=> {
+        globalStore.commit('setLoading', false);
+      });
+  ;
 }
 
 const open = () => {
@@ -30,7 +38,7 @@ const close = () => {
 };
 
 const createAuthority = () => {
-  UT.post('/api/authority/create', {name:data.saveName.trim()})
+  UT.post('/api/authority/save', {name:data.saveName.trim()})
       .then(response => {
         data.saveName = '';
         console.log(response);
