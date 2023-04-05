@@ -1,6 +1,6 @@
-insert into authority (id, name)
-values ('a948f0ae-83e1-4e78-8a03-beaa504b6513', 'ROLE_ADMIN'),
-       ('00e23db5-cdbd-482a-b019-189b93ecfb34', 'ROLE_USER')
+insert into authority (id, name, created_at, created_by)
+values ('a948f0ae-83e1-4e78-8a03-beaa504b6513', 'ROLE_ADMIN', now(), 'admin'),
+       ('00e23db5-cdbd-482a-b019-189b93ecfb34', 'ROLE_USER', now(), 'admin')
 ;
 
 insert into dept (id, name, created_by, created_at)

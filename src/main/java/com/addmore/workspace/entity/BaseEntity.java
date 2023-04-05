@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,8 +26,10 @@ public class BaseEntity {
     String id;
 
     @CreatedBy
+    @Column(updatable = false)
     String createdBy;
 
+    @CreatedDate
     @Column(updatable = false)
     LocalDateTime createdAt;
 

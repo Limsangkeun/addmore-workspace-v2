@@ -3,15 +3,18 @@
 import {inject, reactive} from "vue";
 import _ from "lodash";
 import globalStore from "@/store";
+import {useToast} from "primevue/usetoast";
+
+const toast = useToast();
+const UT = inject('$UT');
 
 const data = reactive({
   authorities : [],
+  selectedAuthorities: [],
   searchName: '',
   saveName: '',
   showDialog : false
 });
-
-const UT = inject('$UT');
 
 const search = (e) => {
   if(!_.isEmpty(e) && e.keyCode !== 13) return;
@@ -19,9 +22,12 @@ const search = (e) => {
   UT.post('/api/authority/find', {name: data.searchName.trim()}, null)
       .then(response => {
         data.searchName = '';
-        console.log(response);
+        data.authorities = response.data.authorities;
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        const msg = err.response.data.msg;
+        toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+      })
       .finally(()=> {
         globalStore.commit('setLoading', false);
       });
@@ -38,12 +44,21 @@ const close = () => {
 };
 
 const createAuthority = () => {
+  globalStore.commit('setLoading', true);
   UT.post('/api/authority/save', {name:data.saveName.trim()})
       .then(response => {
         data.saveName = '';
-        console.log(response);
+        search();
+        close();
+        toast.add({ severity: 'success', summary: '성공', detail: '권한이 생성되었습니다.', life: 3000 });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const msg = err.response.data.msg;
+        toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+      })
+      .finally(()=>{
+        globalStore.commit('setLoading', false);
+      });
 };
 
 </script>
@@ -52,6 +67,7 @@ const createAuthority = () => {
   <div class="grid">
     <div class="col-12">
       <div class="card">
+        <Toast />
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center mb-3">
           <h5 class="m-0 font-bold">권한 목록</h5>
           <div class="my-2 flex flex-row">
@@ -64,14 +80,15 @@ const createAuthority = () => {
           </div>
         </div>
         <DataTable
-            ref="deptGrid"
-            v-model:value="data.deptList"
+            ref="authorityGrid"
+            :value="data.authorities"
+            :selection="data.selectedAuthorities"
             class="p-datatable-sm"
             dataKey="id"
             scrollHeight="500px"
             scrollable
         >
-          <Column selectionMode="single" headerStyle="flex:0 0 1rem" style="flex:0 0 1rem"></Column>
+          <Column selectionMode="multiple" headerStyle="flex:0 0 1rem" style="flex:0 0 1rem"></Column>
           <Column field="name" header="권한명" ></Column>
           <Column field="createdBy" header="생성자"></Column>
           <Column field="createdAt" header="생성일자"></Column>

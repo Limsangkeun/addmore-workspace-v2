@@ -7,6 +7,7 @@ import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
 import {DotLoader} from 'vue3-spinner';
+import LoadingBar from "@/layout/LoadingBar.vue";
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
@@ -74,7 +75,7 @@ const isOutsideClicked = (event) => {
         </div>
         <app-config></app-config>
         <div class="layout-mask"></div>
-        <DotLoader :loading="true"></DotLoader>
+        <LoadingBar :is-loading="globalStore.state.showLoading"></LoadingBar>
     </div>
 
 </template>
