@@ -1,16 +1,65 @@
 import axios from "axios";
-import globalStore from "@/store";
+import useSessionStore from "@/store/sessionStore";
+import useCommonStore from "@/store/commonStore";
 
 class UT {
-    post (url, data, opt) {
-        if(!url.startsWith("/api")) return;
+    /**
+     *
+     * @param url
+     * @param data
+     * @param opt
+     * @returns {Promise<unknown>}
+     */
+    static post (url, data, opt) {
+        const sessionStore = useSessionStore();
+        const commonStore = useCommonStore();
         const options = opt || {};
         options.headers =  {
-            "Authorization": "Bearer " + globalStore.state.userSession.token,
+            "Authorization": "Bearer " + sessionStore.token,
             "Content-Type": "application/json"
         }
-        return axios.post(url, data, options);
-    }
+        return new Promise((resolve, reject) => {
+            commonStore.setLoading(true);
+            axios.post(url, data, options).then(response => {
+                if(response.data.isError) {
+                    const msg = response.data.msg || '상세 에러 내용이 없습니다.';
+                    reject(msg);
+                    return;
+                }
+                resolve(response.data);
+            }). catch(err => {
+                const msg = err.response.data.msg || '상세 에러 내용이 없습니다.';
+                reject(msg);
+            }).finally(()=>{
+                commonStore.setLoading(false);
+            });
+        });
+    };
+
+    static get (url, opt) {
+        const sessionStore = useSessionStore();
+        const commonStore = useCommonStore();
+        const options = opt || {};
+        options.headers =  {
+            "Authorization": "Bearer " + sessionStore.token,
+        }
+        return new Promise((resolve, reject) => {
+            commonStore.setLoading(true);
+            axios.get(url, options).then(response => {
+                if(response.data.isError) {
+                    const msg = response.data.msg || '상세 에러 내용이 없습니다.';
+                    reject(msg);
+                    return;
+                }
+                resolve(response.data);
+            }). catch(err => {
+                const msg = err.response.data.msg || '상세 에러 내용이 없습니다.';
+                reject(msg);
+            }).finally(()=>{
+                commonStore.setLoading(false);
+            });
+        });
+    };
 };
 
-export default new UT();
+export default UT;

@@ -3,10 +3,11 @@ import { useLayout } from '@/layout/composables/layout';
 import {ref, computed, reactive} from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import axios from 'axios';
-import store from '@/store';
 import _ from 'lodash';
+import useSessionStore from "@/store/sessionStore";
 
 const { layoutConfig, contextPath } = useLayout();
+const sessionStore = useSessionStore();
 
 const data = reactive({
   loginModel : {
@@ -28,10 +29,9 @@ const loginBtnClick = () => {
     if(!_.isEmpty(response.data.token)) {
       localStorage.setItem("atk", response.data.token);
       response.data.isValid = true;
-      store.commit('authenticated', response.data);
+      sessionStore.authenticated(response.data);
       loginSuccess();
     }
-
   });
 }
 </script>

@@ -1,0 +1,39 @@
+.h-100 {
+    height: 100% !important;
+}
+.f-50-px {
+    flex : 0 0 50px !important;
+}
+.f-60-px {
+    flex : 0 0 60px !important;
+}
+.f-70-px {
+    flex : 0 0 70px !important;
+}
+.f-80-px {
+    flex : 0 0 80px !important;
+}
+.f-90-px {
+    flex : 0 0 90px !important;
+}
+.f-100-px {
+    flex : 0 0 100px !important;
+}
+.f-200-px {
+    flex : 0 0 200px !important;
+}
+.f-300-px {
+    flex : 0 0 300px !important;
+}
+.f-400-px {
+    flex : 0 0 400px !important;
+}
+.f-500-px {
+    flex : 0 0 500px !important;
+}
+
+.p-datatable-thead th {
+    justify-content: center;
+    background-color: #4b6ba4 !important;
+    color: #fff !important;
+}

@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
 import axios from 'axios';
-import store from '@/store';
+import useSessionStore from '@/store/sessionStore';
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -196,8 +196,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.path != '/auth/login') {
+        const sessionStore = useSessionStore();
         axios
-            .post('/api/auth/is-valid-token', store.state.userSession)
+            .post('/api/auth/is-valid-token', sessionStore.getUserSessionInfo)
             .then((resp) => {
                 if (resp.data.isValid) {
                     next();

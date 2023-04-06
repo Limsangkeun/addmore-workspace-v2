@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import store from './store/sessionStore';
 import UT from "@/util/util";
 
 import PrimeVue from 'primevue/config';
@@ -106,15 +106,17 @@ import CodeHighlight from '@/components/CodeHighlight.vue';
 import BlockViewer from '@/components/BlockViewer.vue';
 
 import '@/assets/styles.scss';
+import '@/assets/custom.css';
+import {createPinia} from "pinia";
 
 const app = createApp(App);
 
+app.use(createPinia());
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);
 app.use(ConfirmationService);
-app.use(store);
 app.provide('$UT', UT);
 
 app.directive('tooltip', Tooltip);

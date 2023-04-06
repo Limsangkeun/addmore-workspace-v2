@@ -1,15 +1,15 @@
 <script setup>
 import { computed, watch, ref } from 'vue';
-import globalStore from "@/store";
 import AppTopbar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
-import {DotLoader} from 'vue3-spinner';
 import LoadingBar from "@/layout/LoadingBar.vue";
+import useCommonStore from "@/store/commonStore";
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
+const commonStore = useCommonStore();
 
 const outsideClickListener = ref(null);
 
@@ -75,7 +75,7 @@ const isOutsideClicked = (event) => {
         </div>
         <app-config></app-config>
         <div class="layout-mask"></div>
-        <LoadingBar :is-loading="globalStore.state.showLoading"></LoadingBar>
+        <LoadingBar :is-loading="commonStore.isLoading"></LoadingBar>
     </div>
 
 </template>
