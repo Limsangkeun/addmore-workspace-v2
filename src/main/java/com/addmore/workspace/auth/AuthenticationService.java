@@ -26,7 +26,6 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(AuthenticationRequest request) {
         User user = User.builder()
-                .id(UUID.randomUUID().toString())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();

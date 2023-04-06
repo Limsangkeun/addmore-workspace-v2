@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 @EntityListeners(value = AuditingEntityListener.class)
 public class BaseEntity {
     @Id

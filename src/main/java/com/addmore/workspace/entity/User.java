@@ -18,18 +18,16 @@ import java.util.Collection;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends BaseEntity implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
     String username;
     String password;
     String name;
+    String email;
     LocalDate birth;
-    LocalDateTime joinDate;
-    boolean enabled;
+    LocalDate joinDate;
+    boolean enabled = true;
 
     @ManyToOne
-    @JoinColumn()
+    @JoinColumn(name = "dept_id")
     Dept dept;
 
     @Override
