@@ -21,7 +21,14 @@ public class ErrorHandler {
     public ResponseEntity<Map<String, Object>> InternalErrorHandler(Exception e) {
         Map<String, Object> resultMap = new HashMap<>();
         log.info(e.getMessage());
-        resultMap.put("msg", e.getMessage());
-        return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        String[] errorTypeSplit = e.getMessage().split("NE:");
+
+        if(errorTypeSplit.length == 1) {
+            resultMap.put("msg", e.getMessage());
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        resultMap.put("isError", true);
+        resultMap.put("msg", errorTypeSplit[1]);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

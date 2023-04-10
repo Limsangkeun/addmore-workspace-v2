@@ -16,8 +16,16 @@ const changeDisplay = (display, mode) => {
 </script>
 
 <template>
-  <MemberList v-if="showList" @go-detail="changeDisplay"></MemberList>
-  <MemberDetail v-else @go-list="changeDisplay"></MemberDetail>
+  <div class="card flex-1">
+    <div class="grid">
+      <div class="col-6">
+        <MemberList></MemberList>
+      </div>
+      <div class="col-6">
+        <MemberDetail></MemberDetail>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>

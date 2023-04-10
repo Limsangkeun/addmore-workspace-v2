@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeptRequest {
+
+    String id;
     String name;
     int page = 0;
     int size = 50;

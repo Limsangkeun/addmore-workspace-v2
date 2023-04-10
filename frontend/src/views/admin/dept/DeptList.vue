@@ -84,7 +84,7 @@ const searchDept = (e) => {
   if (!_.isEmpty(e) && e.keyCode != '13') return;
   searchParam.name = searchParam.name.trim();
 
-  UT.post('/api/dept/list', searchParam, null)
+  UT.post('/api/dept/find', searchParam, null)
       .then(data => {
         deptList.value = data.dept_list;
         searchParam.totalCount = data.total_count;

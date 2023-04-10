@@ -13,8 +13,7 @@ import java.time.LocalDate;
 public class AuthorityRequest {
     String id;
     String name;
-
     LocalDate createdAt;
-
     String createdBy;
+    String userId;
 }

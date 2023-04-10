@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,18 +28,21 @@ public class DeptController {
 
     @PostMapping("/create")
     public void createDept(@NonNull @RequestBody DeptRequest deptRequest) {
-        deptService.createDept(deptRequest.getName());
+        deptService.createDept(deptRequest);
     }
 
-    @PostMapping("/check-duplication")
-    public ResponseEntity<Map<String, Object>> checkDuplication(@NonNull @RequestBody DeptRequest deptRequest) {
-        return new ResponseEntity<>(deptService.checkDuplication(deptRequest.getName()), HttpStatus.OK);
+    @PostMapping("/modify")
+    public void modifyDept(@NonNull @RequestBody DeptRequest deptRequest) {
+        deptService.modifyDept(deptRequest);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/remove")
+    public void removeDept(@NonNull @RequestBody DeptRequest deptRequest) {
+        deptService.removeDept(deptRequest);
+    }
+
+    @PostMapping("/find")
     public ResponseEntity<Map<String, Object>> findDeptList(@NonNull @RequestBody DeptRequest deptRequest) {
-        log.info("======== find dept list ========");
-        log.info(deptRequest.toString());
         Pageable pageable = PageRequest.of(deptRequest.getPage(), deptRequest.getSize());
         return new ResponseEntity<>(deptService.findDeptList(deptRequest.getName(), pageable), HttpStatus.OK);
     }

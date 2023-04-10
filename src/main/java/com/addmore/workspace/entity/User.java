@@ -18,9 +18,14 @@ import java.util.Collection;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends BaseEntity implements UserDetails {
+
+    @Column(length = 30, unique = true, updatable = false)
     String username;
+    @Column(length = 255)
     String password;
+    @Column(length = 30)
     String name;
+    @Column(length = 100)
     String email;
     LocalDate birth;
     LocalDate joinDate;

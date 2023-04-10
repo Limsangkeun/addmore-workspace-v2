@@ -1,16 +1,17 @@
 package com.addmore.workspace.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class UserAuthorities extends BaseEntity{
+class UserAuthority extends BaseEntity{
 
     @ManyToOne
     User user;

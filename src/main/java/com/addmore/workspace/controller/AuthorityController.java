@@ -5,10 +5,7 @@ import com.addmore.workspace.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +17,9 @@ public class AuthorityController {
 
     private final AuthorityService authorityService;
 
-    @PostMapping("/save")
-    public void saveAuthority(@RequestBody AuthorityRequest request) {
-        authorityService.saveAuth(request);
+    @PostMapping("/create")
+    public void createAuthority(@RequestBody AuthorityRequest request) {
+        authorityService.createAuth(request);
     }
 
     @PostMapping("/modify")
@@ -35,10 +32,17 @@ public class AuthorityController {
         authorityService.removeAuth(request);
     }
 
-    @PostMapping("/find")
-    public ResponseEntity<Map<String, Object>> findAuthorities(String name) {
+    @GetMapping("/find")
+    public ResponseEntity<Map<String, Object>> findAuthorities(@RequestParam(defaultValue = "") String name) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("authorities", authorityService.findAuthList(name));
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @PostMapping("/find")
+    public ResponseEntity<Map<String, Object>> findAuthoritiesWithUserId(@RequestBody AuthorityRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("authorities", authorityService.findAllWithUserId(request.getUserId()));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }
