@@ -51,9 +51,17 @@ const save = () => {
       });
 }
 
+const load = (userId) => {
+  console.log(userId);
+}
+
 const findAuthList = () => {
 
 }
+
+defineExpose({
+  load
+})
 </script>
 
 <template>

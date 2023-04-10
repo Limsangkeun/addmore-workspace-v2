@@ -37,3 +37,11 @@
     background-color: #4b6ba4 !important;
     color: #fff !important;
 }
+
+.link {
+    cursor: pointer
+}
+
+.link:hover {
+    color: #0b7ad1;
+}

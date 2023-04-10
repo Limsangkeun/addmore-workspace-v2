@@ -3,6 +3,8 @@ import {inject, onMounted, reactive, ref} from "vue";
 import _ from "lodash";
 import {useToast} from "primevue/usetoast";
 
+
+  const emit = defineEmits(['selectUser']);
   const UT = inject('$UT');
   const toast = useToast();
 
@@ -28,7 +30,12 @@ import {useToast} from "primevue/usetoast";
         .catch(msg => {
           toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
         });
-  }
+  };
+
+  const fnCellClick = (event) => {
+    if(!event.originalEvent.target.classList.contains('link')) return;
+    emit("selectUser", event.data.id);
+  };
 </script>
 
 <template>
@@ -40,6 +47,7 @@ import {useToast} from "primevue/usetoast";
                 <InputText placeholder="Search..." v-model="searchParam.name" @keydown="search"/>
               </span>
             <Button class="p-button-primary mr-2" icon="pi pi-plus" label="신규"/>
+            <Button class="p-button-danger mr-2" icon="pi pi-minus" label="삭제"/>
         </div>
         <Toast></Toast>
       </div>
@@ -47,14 +55,19 @@ import {useToast} from "primevue/usetoast";
           dataKey="id"
           :paginator="true"
           :value="memberList"
-          :rows="20"
+          :rows="25"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
           responsiveLayout="scroll"
+          :show-gridlines="true"
           style="min-height: 500px"
+          @row-click="fnCellClick"
       >
         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+        <Column field="username" header="아이디" body-class="link"></Column>
+        <Column field="name" header="이름"></Column>
+        <Column field="joinDate" header="입사일"></Column>
       </DataTable>
 </template>
 
