@@ -25,10 +25,21 @@ const saveModel = reactive({
     this.dept = '';
     this.birth = null;
     this.joinDate = null;
+  },
+  setData (data) {
+    this.id = data.id;
+    this.username = data.username;
+    this.name = data.name;
+    this.email = data.email;
+    this.dept = data.deptId;
+    this.birth = data.birth;
+    this.joinDate = data.joinDate;
   }
 });
 const deptList = ref([]);
-const authorities = ref([]);
+const authList = ref([]);
+const selectedAuthList = ref([]);
+const isNewUser = ref(true);
 
 onMounted(()=> {
   UT.post('/api/dept/find', {name:''}, null)
@@ -52,15 +63,42 @@ const save = () => {
 }
 
 const load = (userId) => {
-  console.log(userId);
+  findMemberDetail(userId);
+  findAuthList(userId);
+  isNewUser.value = false;
 }
 
-const findAuthList = () => {
+const fnNewUser = () => {
+  saveModel.reset();
+  isNewUser.value = true;
+  deptList.value = [];
+  authList.value = [];
+  selectedAuthList.value = [];
+}
 
+const findMemberDetail = (userId) => {
+  UT.get('/api/user/find/'+encodeURIComponent(userId), {})
+      .then(data => {
+        saveModel.setData(data);
+      })
+      .catch(msg => {
+        toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+      });
+}
+
+const findAuthList = (userId) => {
+  UT.get('/api/authority/find/'+encodeURIComponent(userId), {})
+      .then(data => {
+        authList.value = data.authList;
+      })
+      .catch(msg => {
+        toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+      });
 }
 
 defineExpose({
-  load
+  load,
+  fnNewUser
 })
 </script>
 
@@ -72,7 +110,7 @@ defineExpose({
           <div class="flex md:justify-content-end">
             <div class="my-2 flex flex-row">
               <Button class="p-button-success mr-2" icon="pi pi-plus" label="저장"/>
-              <Button class="p-button-danger mr-2" icon="pi pi-refresh" label="비밀번호 초기화"/>
+              <Button class="p-button-danger mr-2" icon="pi pi-refresh" label="비밀번호 초기화" :hidden="isNewUser"/>
             </div>
           </div>
         </div>
@@ -82,12 +120,6 @@ defineExpose({
               <label for="mUsername" class="col-12 mb-2 md:col-2 md:mb-0">아이디</label>
               <div class="col-12 md:col-10">
                 <InputText id="mUsername" type="text" class="p-inputtext-sm" maxlength="30" :value="saveModel.username"/>
-              </div>
-            </div>
-            <div class="field grid">
-              <label for="mPwd" class="col-12 mb-2 md:col-2 md:mb-0">비밀번호</label>
-              <div class="col-12 md:col-10">
-                <Password id="mPwd" type="password" class="p-inputtext-sm" maxlength="255" :value="saveModel.password"/>
               </div>
             </div>
             <div class="field grid">
@@ -127,11 +159,12 @@ defineExpose({
     <TabPanel header="권한">
       <DataTable
           id="authGrid"
-          :value="authorities"
+          v-model:value="authList"
           :show-gridlines="true"
+          v-model:selection="selectedAuthList"
         >
         <Column selection-mode="multiple"></Column>
-        <Column header="권한명"></Column>
+        <Column field="name" header="권한명"></Column>
         <Column></Column>
       </DataTable>
     </TabPanel>

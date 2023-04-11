@@ -4,7 +4,7 @@ import _ from "lodash";
 import {useToast} from "primevue/usetoast";
 
 
-  const emit = defineEmits(['selectUser']);
+  const emit = defineEmits(['selectUser', 'createUser']);
   const UT = inject('$UT');
   const toast = useToast();
 
@@ -36,6 +36,10 @@ import {useToast} from "primevue/usetoast";
     if(!event.originalEvent.target.classList.contains('link')) return;
     emit("selectUser", event.data.id);
   };
+
+  const fnCreateUser = () => {
+    emit('createUser');
+  }
 </script>
 
 <template>
@@ -46,7 +50,7 @@ import {useToast} from "primevue/usetoast";
                 <i class="pi pi-search"/>
                 <InputText placeholder="Search..." v-model="searchParam.name" @keydown="search"/>
               </span>
-            <Button class="p-button-primary mr-2" icon="pi pi-plus" label="신규"/>
+            <Button class="p-button-primary mr-2" icon="pi pi-plus" label="신규" @click="fnCreateUser"/>
             <Button class="p-button-danger mr-2" icon="pi pi-minus" label="삭제"/>
         </div>
         <Toast></Toast>

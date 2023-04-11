@@ -20,13 +20,17 @@ const selectUser = function (userId) {
   detail.value.load(userId);
 }
 
+const createUser = () => {
+  detail.value.fnNewUser();
+}
+
 </script>
 
 <template>
   <div class="card flex-1">
     <div class="grid">
       <div class="col-6">
-        <MemberList @select-user="selectUser"></MemberList>
+        <MemberList @select-user="selectUser" @create-user="createUser"></MemberList>
       </div>
       <div class="col-6">
         <MemberDetail ref="detail"></MemberDetail>
