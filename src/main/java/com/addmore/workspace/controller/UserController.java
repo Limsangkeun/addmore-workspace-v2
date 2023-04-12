@@ -1,5 +1,6 @@
 package com.addmore.workspace.controller;
 
+import com.addmore.workspace.entity.dto.UserDto;
 import com.addmore.workspace.entity.request.UserRequest;
 import com.addmore.workspace.entity.request.UserSearchParam;
 import com.addmore.workspace.service.UserService;
@@ -40,5 +41,10 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> findUserList(@RequestBody UserSearchParam searchParam) {
         Pageable pageable = PageRequest.of(searchParam.getPage(), searchParam.getSize());
         return new ResponseEntity<>(userService.findUserList(searchParam.getName(), pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<UserDto> findUser(@PathVariable(name = "id") String id) {
+        return new ResponseEntity<>(userService.findUser(id), HttpStatus.OK);
     }
 }

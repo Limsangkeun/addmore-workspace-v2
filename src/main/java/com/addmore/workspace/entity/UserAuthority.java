@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Entity
+@Entity(name = "user_authority")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class UserAuthority extends BaseEntity{
+public class UserAuthority extends BaseEntity{
 
     @ManyToOne
     User user;

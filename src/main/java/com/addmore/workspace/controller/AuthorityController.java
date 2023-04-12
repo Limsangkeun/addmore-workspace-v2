@@ -32,17 +32,15 @@ public class AuthorityController {
         authorityService.removeAuth(request);
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Map<String, Object>> findAuthoritiesWithUserId(@PathVariable(name = "id") String id) {
+        return new ResponseEntity<>(authorityService.findAllWithUserId(id), HttpStatus.OK);
+    }
+
     @GetMapping("/find")
     public ResponseEntity<Map<String, Object>> findAuthorities(@RequestParam(defaultValue = "") String name) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("authorities", authorityService.findAuthList(name));
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @PostMapping("/find")
-    public ResponseEntity<Map<String, Object>> findAuthoritiesWithUserId(@RequestBody AuthorityRequest request) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("authorities", authorityService.findAllWithUserId(request.getUserId()));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

@@ -1,9 +1,14 @@
 package com.addmore.workspace.service;
 
 import com.addmore.workspace.entity.Authority;
+import com.addmore.workspace.entity.User;
+import com.addmore.workspace.entity.UserAuthority;
+import com.addmore.workspace.entity.dto.UserAuthDto;
 import com.addmore.workspace.entity.request.AuthorityRequest;
 import com.addmore.workspace.exception.AlreadyExistException;
 import com.addmore.workspace.repository.AuthorityRepository;
+import com.addmore.workspace.repository.UserAuthorityRepository;
+import com.addmore.workspace.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +24,9 @@ public class AuthorityService {
 
     private final AuthorityRepository authorityRepository;
 
-    private final EntityManagerFactory entityManagerFactory;
+    private final UserAuthorityRepository userAuthorityRepository;
+
+    private final UserRepository userRepository;
 
     public void createAuth(AuthorityRequest auth) {
         if(!StringUtils.hasText(auth.getId())) auth.setId(UUID.randomUUID().toString());
@@ -63,7 +70,28 @@ public class AuthorityService {
 
     public Map<String, Object> findAllWithUserId(String userId) {
         Map<String, Object> resultMap = new HashMap<>();
+        if(!StringUtils.hasText(userId)) throw new IllegalArgumentException("user id 정보가 없거나, 다릅니다.");
 
+        User targetUser = userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("해당 아이디에 해당하는 직원이 없습니다."));
+
+        List<UserAuthority> grantedAuthList = userAuthorityRepository.findUserAuthoritiesByUserEquals(targetUser);
+        List<Authority> allAuthList = authorityRepository.findAll(Sort.by("createdAt").descending());
+
+        List<UserAuthDto> userAuthList = allAuthList.stream().map(auth ->{
+            boolean isChecked = false;
+            for(UserAuthority userAuth : grantedAuthList) {
+                if(auth.getId().equals(userAuth.getAuthority().getId())) {
+                    isChecked = true;
+                    break;
+                }
+            }
+            return UserAuthDto.builder()
+                    .id(auth.getId())
+                    .name(auth.getName())
+                    .isChecked(isChecked)
+                   .build();
+        }).toList();
+        resultMap.put("authList", userAuthList);
         return resultMap;
     }
 }

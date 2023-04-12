@@ -1,6 +1,7 @@
 package com.addmore.workspace.service;
 
 import com.addmore.workspace.entity.User;
+import com.addmore.workspace.entity.dto.UserDto;
 import com.addmore.workspace.entity.request.UserRequest;
 import com.addmore.workspace.exception.AlreadyExistException;
 import com.addmore.workspace.repository.UserRepository;
@@ -87,5 +88,17 @@ public class UserService {
         resultMap.put("user_list", userReqList);
 
         return resultMap;
+    }
+
+    public UserDto findUser(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("해당 ID의 사용자가 없습니다."));
+        return UserDto.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .name(user.getName())
+                .email(user.getEmail())
+                .birth(user.getBirth())
+                .joinDate(user.getJoinDate())
+                .build();
     }
 }
