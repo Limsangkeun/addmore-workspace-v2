@@ -3,6 +3,7 @@
 import {inject, onMounted, reactive, ref} from "vue";
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
+import _ from "lodash"
 
 const UT = inject('$UT');
 const toast = useToast();
@@ -22,16 +23,17 @@ const saveModel = reactive({
     this.name = '';
     this.email = '';
     this.password = '';
-    this.dept = '';
+    this.deptId = '';
     this.birth = null;
     this.joinDate = null;
   },
   setData (data) {
     this.id = data.id;
     this.username = data.username;
+    this.password = data.password;
     this.name = data.name;
     this.email = data.email;
-    this.dept = data.deptId;
+    this.deptId = data.deptId;
     this.birth = data.birth;
     this.joinDate = data.joinDate;
   }
@@ -51,11 +53,11 @@ onMounted(()=> {
       });
 });
 
-const save = () => {
+const fnSave = () => {
   const url = _.isEmpty(saveModel.id) ? 'create' : 'modify';
   UT.post('/api/user/'+url, saveModel, null)
       .then(data => {
-        toast.add({ severity: 'success', summary: '성공', detail: '권한이 저장되었습니다.', life: 3000 });
+        toast.add({ severity: 'success', summary: '성공', detail: '저장되었습니다.', life: 3000 });
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
@@ -71,9 +73,9 @@ const load = (userId) => {
 const fnNewUser = () => {
   saveModel.reset();
   isNewUser.value = true;
-  deptList.value = [];
   authList.value = [];
   selectedAuthList.value = [];
+  findAuthList();
 }
 
 const findMemberDetail = (userId) => {
@@ -87,9 +89,12 @@ const findMemberDetail = (userId) => {
 }
 
 const findAuthList = (userId) => {
-  UT.get('/api/authority/find/'+encodeURIComponent(userId), {})
+  UT.get('/api/authority/find'+(_.isEmpty(userId) ? '' : `/${encodeURIComponent(userId)}`), {})
       .then(data => {
         authList.value = data.authList;
+        for(let auth of data.authList) {
+          if(auth.checked) selectedAuthList.value.push(auth);
+        }
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
@@ -109,8 +114,8 @@ defineExpose({
         <div class="col-12">
           <div class="flex md:justify-content-end">
             <div class="my-2 flex flex-row">
-              <Button class="p-button-success mr-2" icon="pi pi-plus" label="저장"/>
-              <Button class="p-button-danger mr-2" icon="pi pi-refresh" label="비밀번호 초기화" :hidden="isNewUser"/>
+              <Button class="p-button-success mr-2" icon="pi pi-plus" label="저장" @click="fnSave"/>
+              <Button class="p-button-danger mr-2" icon="pi pi-refresh" label="비밀번호 초기화" :disabled="isNewUser"/>
             </div>
           </div>
         </div>
@@ -119,25 +124,31 @@ defineExpose({
             <div class="field grid">
               <label for="mUsername" class="col-12 mb-2 md:col-2 md:mb-0">아이디</label>
               <div class="col-12 md:col-10">
-                <InputText id="mUsername" type="text" class="p-inputtext-sm" maxlength="30" :value="saveModel.username"/>
+                <InputText id="mUsername" type="text" class="p-inputtext-sm" maxlength="30" v-model="saveModel.username"/>
+              </div>
+            </div>
+            <div class="field grid">
+              <label for="mPassword" class="col-12 mb-2 md:col-2 md:mb-0">패스워드</label>
+              <div class="col-12 md:col-10">
+                <Password id="mPassword" class="p-inputtext-sm" maxlength="30" v-model="saveModel.password" :disabled="!isNewUser" toggleMask/>
               </div>
             </div>
             <div class="field grid">
               <label for="mName" class="col-12 mb-2 md:col-2 md:mb-0">이름</label>
               <div class="col-12 md:col-10">
-                <InputText id="mName" type="text" class="p-inputtext-sm" maxlength="30" :value="saveModel.name"/>
+                <InputText id="mName" type="text" class="p-inputtext-sm" maxlength="30" v-model="saveModel.name"/>
               </div>
             </div>
             <div class="field grid">
               <label for="mEmail" class="col-12 mb-2 md:col-2 md:mb-0">이메일</label>
               <div class="col-12 md:col-10">
-                <InputText id="mEmail" type="email" class="p-inputtext-sm" :value="saveModel.email"/>
+                <InputText id="mEmail" type="email" class="p-inputtext-sm" v-model="saveModel.email"/>
               </div>
             </div>
             <div class="field grid">
               <label for="mDept" class="col-12 mb-2 md:col-2 md:mb-0">부서</label>
               <div class="col-12 md:col-10">
-                <Dropdown id="mDept" class="p-inputtext-sm" :options="deptList" option-label="name" option-value="id" v-model="saveModel.dept"></Dropdown>
+                <Dropdown id="mDept" class="p-inputtext-sm" :options="deptList" option-label="name" option-value="id" v-model="saveModel.deptId"></Dropdown>
               </div>
             </div>
             <div class="field grid">
@@ -163,7 +174,7 @@ defineExpose({
           :show-gridlines="true"
           v-model:selection="selectedAuthList"
         >
-        <Column selection-mode="multiple"></Column>
+        <Column field="checked" selection-mode="multiple"></Column>
         <Column field="name" header="권한명"></Column>
         <Column></Column>
       </DataTable>

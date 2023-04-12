@@ -40,7 +40,7 @@ public class AuthorityController {
     @GetMapping("/find")
     public ResponseEntity<Map<String, Object>> findAuthorities(@RequestParam(defaultValue = "") String name) {
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("authorities", authorityService.findAuthList(name));
+        resultMap.put("authList", authorityService.findAuthList(name));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

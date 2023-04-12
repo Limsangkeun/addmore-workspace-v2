@@ -15,7 +15,9 @@ public class UserRequest {
     String username;
     String password;
     String name;
+    String deptId;
     String email;
     LocalDate birth;
     LocalDate joinDate;
+
 }

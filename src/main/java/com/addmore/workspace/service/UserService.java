@@ -1,9 +1,11 @@
 package com.addmore.workspace.service;
 
+import com.addmore.workspace.entity.Dept;
 import com.addmore.workspace.entity.User;
 import com.addmore.workspace.entity.dto.UserDto;
 import com.addmore.workspace.entity.request.UserRequest;
 import com.addmore.workspace.exception.AlreadyExistException;
+import com.addmore.workspace.repository.DeptRepository;
 import com.addmore.workspace.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,12 +28,16 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    private final DeptRepository deptRepository;
     private final PasswordEncoder passwordEncoder;
 
     // create
     public void createUser(UserRequest request) {
         if(userRepository.findByUsername(request.getUsername()).isPresent())
             throw new AlreadyExistException("해당 아이디는 이미 존재합니다.");
+
+        Dept targetDept = deptRepository.findById(request.getDeptId()).orElseThrow(()->new NoSuchElementException("해당 ID의 부서가 없습니다."));
 
         User newUser = User.builder()
                 .username(request.getUsername())
@@ -40,6 +46,7 @@ public class UserService {
                 .email(request.getEmail())
                 .birth(request.getBirth())
                 .joinDate(LocalDate.now())
+                .dept(targetDept)
                 .enabled(true)
                 .build();
         userRepository.save(newUser);
@@ -49,10 +56,13 @@ public class UserService {
     public void modifyUser(UserRequest request) {
         User targetUser = userRepository.findById(request.getId())
                 .orElseThrow(()-> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
+        Dept targetDept = deptRepository.findById(request.getDeptId()).orElseThrow(()->new NoSuchElementException("해당 ID의 부서가 없습니다."));
+
         targetUser.setName(request.getName());
         targetUser.setEmail(request.getEmail());
         targetUser.setBirth(request.getBirth());
         targetUser.setJoinDate(request.getJoinDate());
+        targetUser.setDept(targetDept);
 
         userRepository.save(targetUser);
     }
@@ -98,6 +108,7 @@ public class UserService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .birth(user.getBirth())
+                .deptId(user.getDept().getId())
                 .joinDate(user.getJoinDate())
                 .build();
     }

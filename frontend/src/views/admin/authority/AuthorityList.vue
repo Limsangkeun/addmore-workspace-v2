@@ -38,7 +38,7 @@ const searchAuthorities = (e) => {
 
   UT.get('/api/authority/find?name='+encodeURIComponent(data.searchName.trim()), null)
       .then(receiveData => {
-        data.authorities = receiveData.authorities;
+        data.authorities = receiveData.authList;
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
