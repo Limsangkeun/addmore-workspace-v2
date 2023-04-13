@@ -3,25 +3,19 @@ import MemberList from "@/views/admin/member/MemberList.vue";
 import MemberDetail from '@/views/admin/member/MemberDetail.vue';
 import {ref} from "vue";
 
+const list = ref(null);
 const detail = ref(null);
-let showList = ref(true);
 
-defineExpose()
-
-const changeDisplay = (display, mode) => {
-  if(display === 'list') {
-    showList.value = true;
-  } else {
-    showList.value = false;
-  }
-}
-
-const selectUser = function (userId) {
+const fnSelectUser = function (userId) {
   detail.value.load(userId);
 }
 
-const createUser = () => {
+const fnCreateUser = () => {
   detail.value.fnNewUser();
+}
+
+const fnSaveCompleted = () => {
+  list.value.fnSearch();
 }
 
 </script>
@@ -30,10 +24,10 @@ const createUser = () => {
   <div class="card flex-1">
     <div class="grid">
       <div class="col-6">
-        <MemberList @select-user="selectUser" @create-user="createUser"></MemberList>
+        <MemberList ref="list" @select-user="fnSelectUser" @create-user="fnCreateUser"></MemberList>
       </div>
       <div class="col-6">
-        <MemberDetail ref="detail"></MemberDetail>
+        <MemberDetail ref="detail" @save-completed="fnSaveCompleted"></MemberDetail>
       </div>
     </div>
   </div>

@@ -17,10 +17,10 @@ import {useToast} from "primevue/usetoast";
   const memberList = ref([]);
 
   onMounted(()=> {
-    search();
+    fnSearch();
   });
 
-  const search = (e) => {
+  const fnSearch = (e) => {
     if(!_.isEmpty(e) && e.keyCode !== 13) return;
 
     UT.post('/api/user/find', searchParam, null)
@@ -40,6 +40,10 @@ import {useToast} from "primevue/usetoast";
   const fnCreateUser = () => {
     emit('createUser');
   }
+
+  defineExpose({
+    fnSearch
+  })
 </script>
 
 <template>

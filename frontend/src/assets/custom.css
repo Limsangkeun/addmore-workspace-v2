@@ -32,6 +32,14 @@
     flex : 0 0 500px !important;
 }
 
+.p-datatable-scrollable-wrapper {
+    min-height: 0;
+}
+
+.p-datatable-sm {
+    outline: 1px solid #dee2e6
+}
+
 .p-datatable-thead th {
     justify-content: center;
     background-color: #4b6ba4 !important;
@@ -39,9 +47,15 @@
 }
 
 .link {
-    cursor: pointer
+    cursor: pointer;
+    color: #0b7ad1;
 }
 
 .link:hover {
     color: #0b7ad1;
+    font-weight: bolder;
+}
+
+.text-center {
+    text-align: center;
 }

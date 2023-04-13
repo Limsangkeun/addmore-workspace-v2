@@ -7,6 +7,8 @@ import _ from "lodash"
 
 const UT = inject('$UT');
 const toast = useToast();
+const emit = defineEmits(['saveCompleted'])
+
 const saveModel = reactive({
   id:'',
   username: '',
@@ -44,20 +46,44 @@ const selectedAuthList = ref([]);
 const isNewUser = ref(true);
 
 onMounted(()=> {
-  UT.post('/api/dept/find', {name:''}, null)
+  fnSearch();
+});
+
+const fnReset = () => {
+  saveModel.reset();
+  selectedAuthList.value = [];
+  isNewUser.value = true;
+}
+
+const fnSearch = (name) => {
+  UT.post('/api/dept/find', {name : _.isEmpty(name) ? '' : name}, null)
       .then(data => {
         deptList.value = data.dept_list;
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
       });
-});
+}
 
 const fnSave = () => {
   const url = _.isEmpty(saveModel.id) ? 'create' : 'modify';
   UT.post('/api/user/'+url, saveModel, null)
       .then(data => {
-        toast.add({ severity: 'success', summary: '성공', detail: '저장되었습니다.', life: 3000 });
+        const userAuthList = selectedAuthList.value;
+        userAuthList.forEach(userAuth => {
+          userAuth.userId = data.userId ? data.userId : saveModel.id;
+        });
+        UT.post('/api/user/save-user-authorities', {
+          userAuthDtoList: selectedAuthList.value
+        }, null)
+            .then(()=> {
+              toast.add({ severity: 'success', summary: '성공', detail: '저장되었습니다.', life: 3000 });
+              fnReset();
+              emit('saveCompleted');
+            })
+            .catch((msg) => {
+              toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+        });
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
@@ -65,8 +91,8 @@ const fnSave = () => {
 }
 
 const load = (userId) => {
-  findMemberDetail(userId);
-  findAuthList(userId);
+  fnFindMemberDetail(userId);
+  fnFindAuthList(userId);
   isNewUser.value = false;
 }
 
@@ -75,10 +101,10 @@ const fnNewUser = () => {
   isNewUser.value = true;
   authList.value = [];
   selectedAuthList.value = [];
-  findAuthList();
+  fnFindAuthList();
 }
 
-const findMemberDetail = (userId) => {
+const fnFindMemberDetail = (userId) => {
   UT.get('/api/user/find/'+encodeURIComponent(userId), {})
       .then(data => {
         saveModel.setData(data);
@@ -88,13 +114,15 @@ const findMemberDetail = (userId) => {
       });
 }
 
-const findAuthList = (userId) => {
+const fnFindAuthList = (userId) => {
   UT.get('/api/authority/find'+(_.isEmpty(userId) ? '' : `/${encodeURIComponent(userId)}`), {})
       .then(data => {
         authList.value = data.authList;
+        const tempSelectedAuthList = [];
         for(let auth of data.authList) {
-          if(auth.checked) selectedAuthList.value.push(auth);
+          if(auth.checked) tempSelectedAuthList.push(auth);
         }
+        selectedAuthList.value = tempSelectedAuthList;
       })
       .catch(msg => {
         toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
@@ -154,13 +182,13 @@ defineExpose({
             <div class="field grid">
               <label for="mBirth" class="col-12 mb-2 md:col-2 md:mb-0">생년월일</label>
               <div class="col-12 md:col-10">
-                <Calendar id="mBirth" v-model="saveModel.birth" dateFormt="yy-mm-dd"/>
+                <Calendar id="mBirth" v-model="saveModel.birth" dateFormat="yy-mm-dd" :maxDate="new Date()"/>
               </div>
             </div>
             <div class="field grid">
               <label for="mJoinDate" class="col-12 mb-2 md:col-2 md:mb-0">입사일</label>
               <div class="col-12 md:col-10">
-                <Calendar id="mJoinDate" v-model="saveModel.joinDate" dateFormt="yy-mm-dd"/>
+                <Calendar id="mJoinDate" v-model="saveModel.joinDate" dateFormat="yy-mm-dd" :maxDate="new Date()"/>
               </div>
             </div>
           </div>
@@ -170,11 +198,12 @@ defineExpose({
     <TabPanel header="권한">
       <DataTable
           id="authGrid"
+          data-key="id"
           v-model:value="authList"
           :show-gridlines="true"
           v-model:selection="selectedAuthList"
         >
-        <Column field="checked" selection-mode="multiple"></Column>
+        <Column field="checked" selection-mode="multiple" headerStyle="width: 3rem"></Column>
         <Column field="name" header="권한명"></Column>
         <Column></Column>
       </DataTable>
