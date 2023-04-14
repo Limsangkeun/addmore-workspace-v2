@@ -35,12 +35,14 @@ const saveModel = reactive({
 });
 const deptList = ref([]);
 const selectedDept = ref(null);
+const memberList = ref([]);
 
 onMounted(()=> {
   fnSearchDept();
 })
 
-const fnOpen = () => {
+const fnOpen = (isNew) => {
+  if(isNew) saveModel.reset();
   showDialog.value = true;
 };
 
@@ -52,7 +54,7 @@ const fnClose = () => {
 const saveDept = () => {
   const url = _.isEmpty(saveModel.id) ? 'create' : 'modify';
   const msg = _.isEmpty(saveModel.id) ? '생성' : '수정';
-  UT.post('/api/dept/' + url, saveModel.value, null)
+  UT.post('/api/dept/' + url, saveModel, null)
       .then(()=> {
         toast.add({ severity: 'success', summary: '성공', detail: '정상적으로 '+msg+'되었습니다.', life: 3000 });
         fnClose();
@@ -65,13 +67,13 @@ const saveDept = () => {
 
 const modifyDept = () => {
   saveModel.setModel(_.cloneDeep(selectedDept.value));
-  fnOpen();
+  fnOpen(false);
 }
 
 const removeDept = () => {
   UT.post('/api/dept/remove', selectedDept.value, null)
       .then(() => {
-        toast.add({ severity: 'success', summary: '성공', detail: '정상적으로 '+msg+'되었습니다.', life: 3000 });
+        toast.add({ severity: 'success', summary: '성공', detail: '정상적으로 삭제되었습니다.', life: 3000 });
         fnClose();
         fnSearchDept();
       })
@@ -94,8 +96,17 @@ const fnSearchDept = (e) => {
       });
 };
 
-const findMemberListByDeptId = (e) => {
+const findMemberList = (e) => {
+  if(!e.originalEvent.target.classList.contains('link')) return;
+  const deptId = e.data.id;
 
+  UT.get(`/api/user/find/users-in-dept/${deptId}`, null)
+      .then(data => {
+        memberList.value = data.userList;
+      })
+      .catch(msg => {
+        toast.add({ severity: 'error', summary: '실패', detail: msg, life: 3000 });
+      });
 }
 
 </script>
@@ -125,15 +136,15 @@ const findMemberListByDeptId = (e) => {
         dataKey="id"
         v-model:selection="selectedDept"
         v-model:rows="searchParam.size"
-        :rowsPerPageOptions="[5, 10, 25, 50]"
         v-model:totalRecords="searchParam.totalCount"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        scrollHeight="flex"
+        paginator="true"
+        scrollHeight="500px"
         scrollable
         :show-gridlines="true"
         :resizable-columns="true"
-        @row-click="fnClickDept"
+        @row-click="findMemberList"
     >
       <Column selectionMode="single" style="flex:0 0 40px"></Column>
       <Column field="name" header="부서명" class="f-300-px" body-class="link"></Column>
@@ -145,19 +156,18 @@ const findMemberListByDeptId = (e) => {
       <div class="col-6">
     <h5 class="m-0 font-bold">소속 직원 현황</h5>
     <DataTable
-        ref="deptGrid"
+        ref="memberGrid"
         class="p-datatable-sm"
-        :value="deptList"
+        :value="memberList"
         dataKey="id"
-        v-model:selection="selectedDept"
-        scrollHeight="flex"
+        scrollHeight="500px"
         scrollable
         :show-gridlines="true"
         :resizable-columns="true"
+        table-style="min-height:500px"
     >
-      <Column field="name" header="부서명" class="f-300-px"></Column>
-      <Column field="createdBy" header="생성자" class="f-100-px"></Column>
-      <Column field="createdAt" header="생성일자" class="f-100-px"></Column>
+      <Column field="username" header="아이디" class="f-200-px"></Column>
+      <Column field="name" header="이름" class="f-200-px"></Column>
       <Column></Column>
     </DataTable>
       </div>

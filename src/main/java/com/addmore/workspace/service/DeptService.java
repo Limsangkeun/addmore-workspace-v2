@@ -4,6 +4,7 @@ import com.addmore.workspace.entity.Dept;
 import com.addmore.workspace.entity.dto.DeptDto;
 import com.addmore.workspace.entity.request.DeptRequest;
 import com.addmore.workspace.repository.DeptRepository;
+import com.addmore.workspace.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,7 @@ import java.util.*;
 @Log4j2
 public class DeptService {
     private final DeptRepository deptRepository;
+    private final UserRepository userRepository;
 
     public void createDept(DeptRequest request) {
         if(!StringUtils.hasText(request.getName())) {
@@ -39,6 +41,9 @@ public class DeptService {
         Dept targetDept = deptRepository.findById(request.getId()).orElseThrow(() -> {
             throw new NoSuchElementException("대상 부서가 존재하지 않습니다.");
         });
+        deptRepository.findByName(request.getName()).ifPresent((dept -> {
+            throw new EntityExistsException("해당 부서명은 이미 존재합니다.");
+        }));
         targetDept.setName(request.getName());
         deptRepository.save(targetDept);
     }
@@ -47,6 +52,8 @@ public class DeptService {
         Dept targetDept = deptRepository.findById(request.getId()).orElseThrow(() -> {
             throw new NoSuchElementException("대상 부서가 존재하지 않습니다.");
         });
+        if(!userRepository.findAllByDeptEquals(targetDept).isEmpty()) throw new IllegalArgumentException("해당 부서에 속한 사용자가 존재하여 삭제 할 수 없습니다.");
+
         deptRepository.delete(targetDept);
     }
 

@@ -4,10 +4,11 @@ import {inject, onMounted, reactive, ref} from "vue";
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
 import _ from "lodash"
+import useForm from "vee-validate";
 
 const UT = inject('$UT');
 const toast = useToast();
-const emit = defineEmits(['saveCompleted'])
+const emit = defineEmits(['saveCompleted']);
 
 const saveModel = reactive({
   id:'',

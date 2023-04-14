@@ -53,6 +53,9 @@ class UT {
                 }
                 resolve(response.data);
             }). catch(err => {
+                if(err.response.status === 403) {
+                    alert('세션이 만료되어 로그인 페이지로 이동합니다.');
+                }
                 const msg = err.response.data.msg || '상세 에러 내용이 없습니다.';
                 reject(msg);
             }).finally(()=>{

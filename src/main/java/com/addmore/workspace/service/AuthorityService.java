@@ -30,7 +30,7 @@ public class AuthorityService {
 
     public void createAuth(AuthorityRequest auth) {
         if(!StringUtils.hasText(auth.getId())) auth.setId(UUID.randomUUID().toString());
-        if(authorityRepository.findByName(auth.getName()).isPresent()) throw new AlreadyExistException("NE:해당 권한명은 이미 존재합니다.");
+        if(authorityRepository.findByName(auth.getName()).isPresent()) throw new AlreadyExistException("해당 권한명은 이미 존재합니다.");
 
         authorityRepository.save(Authority.builder()
                 .name(auth.getName())
@@ -38,13 +38,14 @@ public class AuthorityService {
     }
 
     public void modifyAuth(AuthorityRequest auth) {
-        Authority targetAuth = authorityRepository.findById(auth.getId()).orElseThrow(()->new NoSuchElementException("NE:해당 권한은 존재하지 않습니다."));
+        Authority targetAuth = authorityRepository.findById(auth.getId()).orElseThrow(()->new NoSuchElementException("해당 권한은 존재하지 않습니다."));
         targetAuth.setName(auth.getName());
         authorityRepository.save(targetAuth);
     }
 
     public void removeAuth(AuthorityRequest auth) {
-        Authority targetAuth = authorityRepository.findById(auth.getId()).orElseThrow(()->new NoSuchElementException("NE:해당 권한은 존재하지 않습니다."));
+        Authority targetAuth = authorityRepository.findById(auth.getId()).orElseThrow(()->new NoSuchElementException("해당 권한은 존재하지 않습니다."));
+        if(!userAuthorityRepository.findAllByAuthorityEquals(targetAuth).isEmpty()) throw new IllegalArgumentException("해당 권한이 매핑된 사용자가 존재하여 삭제 할 수 없습니다.");
         authorityRepository.delete(targetAuth);
     }
 

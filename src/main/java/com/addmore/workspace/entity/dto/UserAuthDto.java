@@ -13,5 +13,8 @@ public class UserAuthDto {
     String id;
     // authority name
     String name;
+
     boolean isChecked;
+
+    String userId;
 }
