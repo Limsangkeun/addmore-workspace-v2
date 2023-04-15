@@ -24,7 +24,7 @@ const loginSuccess = function () {
 }
 
 const loginBtnClick = (e) => {
-  if (!_.isEmpty(e) && e.keyCode !== 13) return;
+  if (!_.isEmpty(e) && (e.keyCode !== 13 || e.type === 'click')) return;
   axios.post('/api/auth/authenticate', loginModel, {}).then(response => {
     if (!_.isEmpty(response.data.token)) {
       localStorage.setItem("atk", response.data.token);

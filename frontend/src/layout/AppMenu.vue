@@ -13,7 +13,8 @@ const model = ref([
         items: [
             { label: '직원관리', icon: 'pi pi-fw pi-id-card', to: '/admin/member' },
             { label: '부서관리', icon: 'pi pi-fw pi-users', to: '/admin/dept' },
-            { label: '권한관리', icon: 'pi pi-fw pi-lock', to: '/admin/authority' }
+            { label: '권한관리', icon: 'pi pi-fw pi-lock', to: '/admin/authority' },
+            { label: '크롤링', icon: 'pi pi-fw pi-database', to: '/admin/crawler' }
         ]
     },
     {

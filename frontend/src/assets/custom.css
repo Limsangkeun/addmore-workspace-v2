@@ -46,6 +46,20 @@
     color: #fff !important;
 }
 
+.p-selection-header {
+    display: flex !important;
+    flex: 0 0 40px !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.p-selection-column {
+    display: flex !important;
+    flex: 0 0 40px !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
 .link {
     cursor: pointer;
     color: #0b7ad1;
@@ -59,3 +73,4 @@
 .text-center {
     text-align: center;
 }
+

@@ -74,6 +74,7 @@ defineExpose({
   </div>
   <DataTable
       dataKey="id"
+      class="p-datatable-sm"
       :paginator="true"
       :value="memberList"
       v-model:selection="selectedMember"
@@ -83,7 +84,6 @@ defineExpose({
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
       responsiveLayout="scroll"
       :show-gridlines="true"
-      style="min-height: 500px"
       @row-click="fnCellClick"
   >
     <Column selectionMode="single" headerStyle="width: 3rem"></Column>
