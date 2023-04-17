@@ -35,7 +35,6 @@ onMounted(()=> {
 });
 const fnSearchHistory = handleSubmit((values) => {
   console.log(values);
-  resetForm();
   return false;
 })
 
