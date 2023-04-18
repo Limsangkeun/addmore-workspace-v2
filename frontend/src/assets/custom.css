@@ -1,6 +1,9 @@
 .h-100 {
     height: 100% !important;
 }
+.f-40-px {
+    flex : 0 0 40px !important;
+}
 .f-50-px {
     flex : 0 0 50px !important;
 }
