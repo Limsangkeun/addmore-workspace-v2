@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CompanyRepository extends JpaRepository<Company, String> {
-
+    Page<Company> findAllByNameContaining(String name, Pageable pageable);
 }

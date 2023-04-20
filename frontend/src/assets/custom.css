@@ -1,3 +1,35 @@
+.w-80-px {
+    width: 80px !important;
+}
+
+.w-100-px {
+    width: 100px !important;
+}
+
+.w-110-px {
+    width: 110px !important;
+}
+
+.w-120-px {
+    width: 120px !important;
+}
+
+.w-140-px {
+    width: 140px !important;
+}
+
+.w-160-px {
+    width: 160px !important;
+}
+
+.w-180-px {
+    width: 180px !important;
+}
+
+.w-200-px {
+    width: 200px !important;
+}
+
 .h-100 {
     height: 100% !important;
 }
@@ -21,6 +53,33 @@
 }
 .f-100-px {
     flex : 0 0 100px !important;
+}
+.f-110-px {
+    flex : 0 0 110px !important;
+}
+.f-120-px {
+    flex : 0 0 120px !important;
+}
+.f-130-px {
+    flex : 0 0 130px !important;
+}
+.f-140-px {
+    flex : 0 0 140px !important;
+}
+.f-150-px {
+    flex : 0 0 150px !important;
+}
+.f-160-px {
+    flex : 0 0 160px !important;
+}
+.f-170-px {
+    flex : 0 0 170px !important;
+}
+.f-180-px {
+    flex : 0 0 180px !important;
+}
+.f-190-px {
+    flex : 0 0 190px !important;
 }
 .f-200-px {
     flex : 0 0 200px !important;
@@ -62,6 +121,15 @@
     align-items: center !important;
     justify-content: center !important;
 }
+
+/*
+ * fileUpload
+ */
+.p-fileupload-buttonbar > .p-button {
+    font-size: 0.875rem;
+    padding: 0.65625rem 1.09375rem;
+}
+
 
 .link {
     cursor: pointer;

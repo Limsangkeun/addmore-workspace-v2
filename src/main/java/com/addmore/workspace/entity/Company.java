@@ -29,6 +29,8 @@ public class Company extends BaseEntity {
     String roadAddr;
     @Column(length = 500)
     String homePage;
+    @Column(length = 500)
+    String detailUrl;
     @Column(length = 100)
     String category;
     boolean is114;

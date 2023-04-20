@@ -21,13 +21,9 @@ const model = ref([
         label: 'workspace',
         items: [
             { label: '업체현황', icon: 'pi pi-fw pi-building', to: '/company' },
+            { label: '계약현황', icon: 'pi pi-fw pi-building', to: '/contract' },
+            { label: '게시판', icon: 'pi pi-fw pi-comments', to: '/board' },
         ]
-    },
-    {
-      label: '계약',
-      items: [
-          { label: '계약현황', icon: 'pi pi-fw pi-building', to: '/contract' },
-      ]
     },
     {
         label: 'UI Components',

@@ -23,7 +23,7 @@ const loginSuccess = function () {
   location.href = '/';
 }
 
-const loginBtnClick = (e) => {
+const fnDoLogin = (e) => {
   if (!_.isEmpty(e) && (e.keyCode !== 13 || e.type === 'click')) return;
   axios.post('/api/auth/authenticate', loginModel, {}).then(response => {
     if (!_.isEmpty(response.data.token)) {
@@ -54,7 +54,7 @@ const loginBtnClick = (e) => {
 
             <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
             <Password id="password1" v-model="loginModel.password" class="w-full mb-3" inputClass="w-full"
-                      inputStyle="padding:1rem" @keydown="loginBtnClick"></Password>
+                      inputStyle="padding:1rem" @keydown="fnDoLogin"></Password>
 
             <!--                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
                                         <div class="flex align-items-center">
@@ -63,7 +63,7 @@ const loginBtnClick = (e) => {
                                         </div>
                                         <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(&#45;&#45;primary-color)">Forgot password?</a>
                                     </div>-->
-            <Button label="Sign In" class="w-full p-3 text-xl" @click="loginBtnClick"></Button>
+            <Button label="Sign In" class="w-full p-3 text-xl" @click="fnDoLogin" @keydown="fnDoLogin"></Button>
           </div>
         </div>
       </div>
