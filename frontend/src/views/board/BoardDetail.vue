@@ -1,7 +1,24 @@
 <script setup>
 import {ref} from "vue";
+import CustomEditor from "../common/ckeditor/CustomEditor.vue";
 
 const tempValue = ref('');
+const fileUploader = ref(null);
+
+const fnCreateBoard = () => {
+  console.log(tempValue);
+}
+
+const fnBeforeUpload = (xhr, formData) => {
+console.log(xhr);
+console.log(formData)
+}
+
+const fnUpload = (event) => {
+  const files = event.files;
+  console.log(files);
+  console.log(fileUploader);
+}
 </script>
 
 <template>
@@ -14,10 +31,17 @@ const tempValue = ref('');
         <Button class="p-button-sm p-button-danger w-110-px" icon="pi pi-trash" label="삭제" @click="fnCreateBoard"></Button>
       </div>
     </div>
-    <div>
-      <Editor v-model="tempValue" editor-style="height:320px"></Editor>
+    <div class="flex flex-column">
+      <InputText placeholder="제목을 입력하세요." class="mb-1"></InputText>
+      <CustomEditor :height="400"></CustomEditor>
     </div>
-    <FileUpload :multiple="true"></FileUpload>
+    <panel header="첨부파일">
+      <FileUpload ref="fileUploader" name="files" :url="'/api/file/upload'" :multiple="true" @upload="fnUpload" :auto="false" @before-upload="fnBeforeUpload">
+        <template #empty>
+          <p>드래그하거나 파일을 첨부해주세요</p>
+        </template>
+      </FileUpload>
+    </panel>
   </div>
 </template>
 
