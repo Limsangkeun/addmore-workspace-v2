@@ -31,6 +31,10 @@ public class FileController {
         return new ResponseEntity<>(fileService.findAllByGroupId(groupId), HttpStatus.OK);
     }
 
+    @PostMapping("/image-upload")
+    public ResponseEntity<Map<String, Object>> uploadImage(MultipartFile file) throws IOException {
+        return new ResponseEntity<>(fileService.uploadImage(file), HttpStatus.OK);
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadFiles(@RequestParam(name = "files")List<MultipartFile> files) throws IOException {

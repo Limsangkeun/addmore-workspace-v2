@@ -13,6 +13,9 @@ const useSessionStore = defineStore('sessionStore', {
                 username : this.username,
                 isValid : this.isValid
             }
+        },
+        getToken () {
+            return this.token;
         }
     },
     actions: {

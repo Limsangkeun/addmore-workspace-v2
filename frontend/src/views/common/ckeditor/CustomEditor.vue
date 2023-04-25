@@ -1,7 +1,9 @@
 <script setup>
-  import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-  import Ckeditor from '@ckeditor/ckeditor5-vue';
-  import {onMounted, ref, useAttrs} from "vue";
+  import {ClassicEditor, UploadAdapter} from '@ckeditor/ckeditor5-build-classic';
+  import {onMounted, ref} from "vue";
+  import useSessionStore from "@/store/sessionStore";
+
+  const sessionStore = useSessionStore();
 
   const props = defineProps({
     height: Number
@@ -11,21 +13,31 @@
 
   onMounted(()=> {
     ClassicEditor.create(editor.value, {
-
+      plugins: [SimpleUploadAdapter],
+      language: 'ko',
+      placeholder: '내용을 입력하세요.',
+      simpleUpload: {
+        uploadUrl: '/api/file/image-upload',
+        withCredentials: true,
+        headers: {
+          Authorization: 'Bearer ' + sessionStore.getToken
+        }
+      }
     }).then(editor=> {
       console.log(editor);
-    });
+    }).catch(err => {
+      console.log(err);
+    })
   });
+
+
 </script>
 
 <template>
-  <div>
-    <div ref="editor">
-      <Ckeditor></Ckeditor>
-    </div>
+  <div class="mb-2">
+    <div ref="editor"></div>
   </div>
 </template>
 
 <style scoped>
-
 </style>

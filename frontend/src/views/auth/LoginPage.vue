@@ -24,15 +24,16 @@ const loginSuccess = function () {
 }
 
 const fnDoLogin = (e) => {
-  if (!_.isEmpty(e) && (e.keyCode !== 13 || e.type === 'click')) return;
-  axios.post('/api/auth/authenticate', loginModel, {}).then(response => {
-    if (!_.isEmpty(response.data.token)) {
-      localStorage.setItem("atk", response.data.token);
-      response.data.isValid = true;
-      sessionStore.authenticated(response.data);
-      loginSuccess();
-    }
-  });
+  if (!_.isEmpty(e) && (e.keyCode === 13 || e.type === 'click')) {
+    axios.post('/api/auth/authenticate', loginModel, {}).then(response => {
+      if (!_.isEmpty(response.data.token)) {
+        localStorage.setItem("atk", response.data.token);
+        response.data.isValid = true;
+        sessionStore.authenticated(response.data);
+        loginSuccess();
+      }
+    });
+  }
 }
 </script>
 

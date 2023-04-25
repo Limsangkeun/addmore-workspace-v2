@@ -33,6 +33,25 @@ public class FileService {
 
     private final String TEMP_UPLOAD_PATH = "C:/uploads/temp/";
 
+    public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
+        Map<String, Object> resultMap = new HashMap<>();
+        Path uploadPath = Paths.get(UPLOAD_PATH+"images/");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        StringBuilder fileNameBuilder = new StringBuilder();
+        String fileName = fileNameBuilder
+                .append(UUID.randomUUID().toString())
+                .append(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))).toString();
+
+        Path filePath = uploadPath.resolve(fileName);
+        try (OutputStream outputStream = Files.newOutputStream(filePath)) {
+            outputStream.write(file.getBytes());
+        }
+        resultMap.put("url", filePath);
+        return resultMap;
+    }
+
     public Map<String, Object> uploadFiles(List<MultipartFile> fileList) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
         Path uploadPath = Paths.get(UPLOAD_PATH);
