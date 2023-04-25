@@ -33,7 +33,7 @@ const fnUpload = (event) => {
     </div>
     <div class="flex flex-column">
       <InputText placeholder="제목을 입력하세요." class="mb-1"></InputText>
-      <CustomEditor :height="400"></CustomEditor>
+      <CustomEditor></CustomEditor>
     </div>
     <panel header="첨부파일">
       <FileUpload ref="fileUploader" name="files" :url="'/api/file/upload'" :multiple="true" @upload="fnUpload" :auto="false" @before-upload="fnBeforeUpload">

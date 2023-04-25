@@ -1,5 +1,5 @@
 <script setup>
-  import {ClassicEditor, UploadAdapter} from '@ckeditor/ckeditor5-build-classic';
+  import Editor from "ckeditor5-custom-build/build/ckeditor";
   import {onMounted, ref} from "vue";
   import useSessionStore from "@/store/sessionStore";
 
@@ -12,8 +12,8 @@
   const editor = ref(null);
 
   onMounted(()=> {
-    ClassicEditor.create(editor.value, {
-      plugins: [SimpleUploadAdapter],
+    Editor.create(editor.value, {
+      plugins: ['SimpleUploadAdapter'],
       language: 'ko',
       placeholder: '내용을 입력하세요.',
       simpleUpload: {
@@ -35,7 +35,7 @@
 
 <template>
   <div class="mb-2">
-    <div ref="editor"></div>
+    <<div ref="editor"></div>>
   </div>
 </template>
 
