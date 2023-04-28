@@ -8,6 +8,8 @@
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^37.1.0",
+        "@ckeditor/ckeditor5-vue": "^5.1.0",
         "axios": "^1.3.4",
         "chart.js": "3.3.2",
         "ckeditor5-custom-build": "file:ckeditor5",

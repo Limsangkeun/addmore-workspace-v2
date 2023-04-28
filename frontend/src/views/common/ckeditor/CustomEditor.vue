@@ -1,28 +1,22 @@
 <script setup>
-  import Editor from "ckeditor5-custom-build/build/ckeditor";
   import {onMounted, ref} from "vue";
   import useSessionStore from "@/store/sessionStore";
+  import Editor from 'ckeditor5-custom-build/src/ckeditor'
+  import SimpleUploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter.js";
 
   const sessionStore = useSessionStore();
 
+  const editor = ref(null);
+  const content = ref('');
   const props = defineProps({
     height: Number
   });
 
-  const editor = ref(null);
 
   onMounted(()=> {
     Editor.create(editor.value, {
-      plugins: ['SimpleUploadAdapter'],
       language: 'ko',
-      placeholder: '내용을 입력하세요.',
-      simpleUpload: {
-        uploadUrl: '/api/file/image-upload',
-        withCredentials: true,
-        headers: {
-          Authorization: 'Bearer ' + sessionStore.getToken
-        }
-      }
+      placeholder: '내용을 입력하세요.'
     }).then(editor=> {
       console.log(editor);
     }).catch(err => {
@@ -30,12 +24,11 @@
     })
   });
 
-
 </script>
 
 <template>
   <div class="mb-2">
-    <<div ref="editor"></div>>
+    <div ref="editor"></div>
   </div>
 </template>
 
