@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> {
                     authorize
                             .requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/crawler/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .formLogin().disable()
