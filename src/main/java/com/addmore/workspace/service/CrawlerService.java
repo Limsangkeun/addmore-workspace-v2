@@ -47,7 +47,7 @@ public class CrawlerService {
                 webDriver.get("https://m.map.naver.com/search2/site.nhn?style=v5&code="+id);
                 boolean is114 = webDriver.getPageSource().indexOf("02-114") == -1 ? false : true;
                 data.put("is114", is114);
-                int result = 0; //insertToNcd(data);
+                int result = insertToNcd(data);
                 if(result != 1) {
                     log.error(data.get("id").toString() + " : 위 아이디의 네이버 데이터 삽입/수정에 실패하였습니다.");
                 }
@@ -63,6 +63,7 @@ public class CrawlerService {
         int result = 0;
         try {
             Optional<Company> companyOpt = companyRepository.findAllByCodeEquals((String)data.get("id"));
+            Company companyEntity = null;
             if(companyOpt.isEmpty()) {
 
             } else {
